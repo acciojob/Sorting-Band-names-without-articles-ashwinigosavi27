@@ -1,38 +1,33 @@
 //your code here
+const bands = [
+    "The Plot in You",
+    "The Devil Wears Prada",
+    "Pierce the Veil",
+    "Norma Jean",
+    "The Bled",
+    "Say Anything",
+    "The Midway State",
+    "We Came as Romans",
+    "Counterparts",
+    "Oh, Sleeper",
+    "A Skylit Drive",
+    "Anywhere But Here",
+    "An Old Dog"
+];
 
-const bandNames = ["The Beatles", "Aerosmith", "Red Hot Chili Peppers", "The Rolling Stones", "Anthrax"];
-
-// Function to sort band names in lexicographic order while excluding articles
-function sortBandNames(bandNames) {
-  const articles = ["a", "an", "the"];
-
-  // Custom sort function to compare band names while ignoring articles
-  function compareBandNames(a, b) {
-    const bandA = removeArticles(a);
-    const bandB = removeArticles(b);
-    return bandA.localeCompare(bandB);
-  }
-
-  // Function to remove articles from a band name
-  function removeArticles(name) {
-    const words = name.toLowerCase().split(" ");
-    const filteredWords = words.filter(word => !articles.includes(word));
-    return filteredWords.join(" ");
-  }
-
-  // Sort the band names using the custom compare function
-  const sortedBandNames = bandNames.sort(compareBandNames);
-  return sortedBandNames;
+/**
+ * 我們希望排序的時候能略過一些關鍵字
+ **/
+function strip (word) {
+    let regex = new RegExp('^(a |the |an )', 'i')
+    return word.replace(regex, '').trim()
 }
 
-// Sort the band names
-const sortedNames = sortBandNames(bandNames);
+const sortedBands = bands.sort((a, b) => (strip(a) > strip(b)) ? 1 : -1)
 
-// Display the sorted band names in an HTML list
-const ulElement = document.getElementById("band");
 
-sortedNames.forEach(name => {
-  const liElement = document.createElement("li");
-  liElement.textContent = name;
-  ulElement.appendChild(liElement);
-});
+/** 
+ * add ul list in HTML
+ **/
+document.querySelector('#bands').innerHTML = 
+    sortedBands.map(item => `<li>${item}</li>`).join('')
